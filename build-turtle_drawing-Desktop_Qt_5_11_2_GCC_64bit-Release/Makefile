@@ -61,7 +61,10 @@ OBJECTS       = main.o \
 		svgview.o \
 		moc_mywindows.o \
 		moc_svgview.o
-DIST          = /mnt/porn/Qt/5.11.2/gcc_64/mkspecs/features/spec_pre.prf \
+DIST          = ../turtle_drawing/exemple.turtle \
+		../turtle_drawing/turtle.flex \
+		../turtle_drawing/turtle.bison \
+		/mnt/porn/Qt/5.11.2/gcc_64/mkspecs/features/spec_pre.prf \
 		/mnt/porn/Qt/5.11.2/gcc_64/mkspecs/common/unix.conf \
 		/mnt/porn/Qt/5.11.2/gcc_64/mkspecs/common/linux.conf \
 		/mnt/porn/Qt/5.11.2/gcc_64/mkspecs/common/sanitize.conf \
