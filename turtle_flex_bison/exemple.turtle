@@ -1,0 +1,22 @@
+
+# un commentaire 
+
+2 + 3  # un commentaire 
+
+#(400, 400)
+#taille 
+
+#couleur(255 , 255, 255)
+#aller(50,50)
+
+
+
+#pour( i= 0:4){
+#    tourner(90*i)
+#    avancer(50)
+#}
+
+
+
+
+
