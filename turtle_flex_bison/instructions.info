@@ -1,13 +1,27 @@
 
-# xxx         -> commentaire
+# xxx           -> commentaire
 
-taille x y    -> defini la zone de dessin
+taille x y      -> definit la zone de dessin
 
-couleur r g b -> défini la couleur du trai couleur
+couleur r g b   -> définit la couleur du trait
 
-avancer l     -> fait avancer la tortue d'une longueur l
-tourneD a     -> fait tourner la tourtue à droite d'un angle a
-tourneG a     -> fait tourner la tourtue à gauche d'un angle a
+taillec x       -> définit la taille du curseur à x
 
-poser         -> pose le stylo sur la feuille pour dessiner
-lever         -> leve le stylo de  la feuille pous ne plus dessiner
+avancer l       -> fait avancer la tortue d'une longueur l
+tourneD a       -> fait tourner la tourtue à droite d'un angle a
+tourneG a       -> fait tourner la tourtue à gauche d'un angle a
+
+position x y    -> positionne le curseur en x,y
+
+poser           -> pose le stylo sur la feuille pour dessiner
+lever           -> leve le stylo de  la feuille pous ne plus dessiner
+
+
+//Pour les boucles //
+
+boucle{code}    -> exécuter code à chaque itération
+
+pour i=a:b:c    -> pour i de a à b, pas de c.
+
+si (test){code} -> si test est vrai, exécuter code;
+sinon {code}    -> sinon, exécuter code
