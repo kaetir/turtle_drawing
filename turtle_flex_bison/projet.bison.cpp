@@ -73,7 +73,7 @@
 	using namespace std;
 	extern FILE *yyin;
 	extern int yylex ();
-	int yyerror(char *s) { printf("%s\n", s); }
+	int yyerror(const char *s) { printf("%s\n", s); return 0;}
 
 	map<string, double> variables;
 
@@ -120,7 +120,7 @@ extern int yydebug;
     IDENTIFIER = 259,
     REPEAT = 260,
     ENSEMBLE = 261,
-    COMMENT = 262
+    TAILLE = 262
   };
 #endif
 
@@ -382,7 +382,7 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  2
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   41
+#define YYLAST   49
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  16
@@ -391,7 +391,7 @@ union yyalloc
 /* YYNRULES -- Number of rules.  */
 #define YYNRULES  16
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  31
+#define YYNSTATES  33
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
@@ -449,7 +449,7 @@ static const yytype_uint8 yyrline[] =
 static const char *const yytname[] =
 {
   "$end", "error", "$undefined", "NUMBER", "IDENTIFIER", "REPEAT",
-  "ENSEMBLE", "COMMENT", "'+'", "'-'", "'*'", "'/'", "'\\n'", "'('", "')'",
+  "ENSEMBLE", "TAILLE", "'+'", "'-'", "'*'", "'/'", "'\\n'", "'('", "')'",
   "'='", "$accept", "ligne", "instruction", "expression", YY_NULLPTR
 };
 #endif
@@ -478,10 +478,10 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-     -15,     4,   -15,   -15,   -14,   -10,    15,    17,    15,    24,
-      30,    15,    15,   -15,    30,   -15,    16,   -15,    15,    15,
-      15,    15,    30,    23,   -15,    10,    10,   -15,   -15,    15,
-      30
+     -15,    16,   -15,   -15,   -14,    -3,     4,    -2,     4,     6,
+      38,     4,     4,   -15,    38,     4,    17,   -15,     4,     4,
+       4,     4,    38,    24,    31,   -15,    -7,    -7,   -15,   -15,
+       4,   -15,    38
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -490,9 +490,9 @@ static const yytype_int8 yypact[] =
 static const yytype_uint8 yydefact[] =
 {
        3,     9,     1,    15,    16,     0,     0,     0,     0,     0,
-       4,     0,     0,    16,     7,     8,     0,     2,     0,     0,
-       0,     0,     6,     0,    14,    10,    11,    12,    13,     0,
-       5
+       4,     0,     0,    16,     8,     0,     0,     2,     0,     0,
+       0,     0,     7,     0,     0,    14,    10,    11,    12,    13,
+       0,     5,     6
 };
 
   /* YYPGOTO[NTERM-NUM].  */
@@ -512,20 +512,20 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-      14,    11,    16,    12,     2,    22,    23,     3,     4,     5,
-       6,     7,    25,    26,    27,    28,     0,     8,     3,    13,
-      20,    21,     0,    30,    18,    19,    20,    21,     8,    15,
-      24,    18,    19,    20,    21,     0,    17,    29,    18,    19,
-      20,    21
+      14,    11,    16,    20,    21,    22,    23,     3,    13,    24,
+      12,    15,    26,    27,    28,    29,     2,     8,    17,     3,
+       4,     5,     6,     7,    32,    18,    19,    20,    21,     8,
+       0,    25,    18,    19,    20,    21,     0,     0,    30,    18,
+      19,    20,    21,     0,     0,    31,    18,    19,    20,    21
 };
 
 static const yytype_int8 yycheck[] =
 {
-       6,    15,     8,    13,     0,    11,    12,     3,     4,     5,
-       6,     7,    18,    19,    20,    21,    -1,    13,     3,     4,
-      10,    11,    -1,    29,     8,     9,    10,    11,    13,    12,
-      14,     8,     9,    10,    11,    -1,    12,    14,     8,     9,
-      10,    11
+       6,    15,     8,    10,    11,    11,    12,     3,     4,    15,
+      13,    13,    18,    19,    20,    21,     0,    13,    12,     3,
+       4,     5,     6,     7,    30,     8,     9,    10,    11,    13,
+      -1,    14,     8,     9,    10,    11,    -1,    -1,    14,     8,
+       9,    10,    11,    -1,    -1,    14,     8,     9,    10,    11
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -533,9 +533,9 @@ static const yytype_int8 yycheck[] =
 static const yytype_uint8 yystos[] =
 {
        0,    17,     0,     3,     4,     5,     6,     7,    13,    18,
-      19,    15,    13,     4,    19,    12,    19,    12,     8,     9,
-      10,    11,    19,    19,    14,    19,    19,    19,    19,    14,
-      19
+      19,    15,    13,     4,    19,    13,    19,    12,     8,     9,
+      10,    11,    19,    19,    19,    14,    19,    19,    19,    19,
+      14,    14,    19
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
@@ -548,7 +548,7 @@ static const yytype_uint8 yyr1[] =
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     3,     0,     1,     5,     3,     2,     2,     0,
+       0,     2,     3,     0,     1,     4,     5,     3,     2,     0,
        3,     3,     3,     3,     3,     1,     1
 };
 
@@ -1233,25 +1233,25 @@ yyreduce:
 
   case 5:
 #line 35 "turtle.bison" /* yacc.c:1645  */
-    { for (int i =0; i<(yyvsp[-2].valeur); i++) cout << (yyvsp[0].valeur) << endl;}
+    { cout << "taille " /*<< $2 /*<< ' ' << $4*/ << endl;}
 #line 1238 "projet.bison.cpp" /* yacc.c:1645  */
     break;
 
   case 6:
 #line 36 "turtle.bison" /* yacc.c:1645  */
-    { variables[(yyvsp[-2].nom)] = (yyvsp[0].valeur); cout << "Affectation de " << (yyvsp[0].valeur) << " à " << (yyvsp[-2].nom) << endl;}
+    { for (int i =0; i<(yyvsp[-2].valeur); i++) cout << (yyvsp[0].valeur) << endl;}
 #line 1244 "projet.bison.cpp" /* yacc.c:1645  */
     break;
 
   case 7:
 #line 37 "turtle.bison" /* yacc.c:1645  */
-    { cout << "itération de " << (yyvsp[0].valeur) << endl; }
+    { variables[(yyvsp[-2].nom)] = (yyvsp[0].valeur); cout << "Affectation de " << (yyvsp[0].valeur) << " à " << (yyvsp[-2].nom) << endl;}
 #line 1250 "projet.bison.cpp" /* yacc.c:1645  */
     break;
 
   case 8:
 #line 38 "turtle.bison" /* yacc.c:1645  */
-    { cout << "bastien" << endl; }
+    { cout << "itération de " << (yyvsp[0].valeur) << endl; }
 #line 1256 "projet.bison.cpp" /* yacc.c:1645  */
     break;
 

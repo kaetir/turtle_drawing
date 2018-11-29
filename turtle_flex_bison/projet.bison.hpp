@@ -52,7 +52,7 @@ extern int yydebug;
     IDENTIFIER = 259,
     REPEAT = 260,
     ENSEMBLE = 261,
-    COMMENT = 262
+    TAILLE = 262
   };
 #endif
 

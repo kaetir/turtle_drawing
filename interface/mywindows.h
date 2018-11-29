@@ -19,7 +19,7 @@ private:
     QPushButton      *m_save         = new QPushButton("save", this);
     QPushButton      *m_run          = new QPushButton("run", this);
     SvgView          *m_SVG          ;
-//    QSvgWidget       *m_SVG          = new QSvgWidget(QString("test.svg"), this);
+    // QSvgWidget       *m_SVG          = new QSvgWidget(QString("test.svg"), this);
     Turtle           *m_turtle       = new Turtle();
 
 
