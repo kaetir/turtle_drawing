@@ -16,6 +16,8 @@ void MyWindows::renderSvg()
     this->m_SVG->openFile(QFile(QString(this->m_filename->text() + ".svg" )));
 }
 
+
+
 MyWindows::MyWindows(): m_SVG(new SvgView)
 {
 
