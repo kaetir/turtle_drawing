@@ -1,0 +1,13 @@
+
+# xxx         -> commentaire
+
+taille x y    -> defini la zone de dessin
+
+couleur r g b -> défini la couleur du trai couleur
+
+avancer l     -> fait avancer la tortue d'une longueur l
+tourneD a     -> fait tourner la tourtue à droite d'un angle a
+tourneG a     -> fait tourner la tourtue à gauche d'un angle a
+
+poser         -> pose le stylo sur la feuille pour dessiner
+lever         -> leve le stylo de  la feuille pous ne plus dessiner
