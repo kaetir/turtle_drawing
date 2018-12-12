@@ -26,6 +26,11 @@
 *.sql
 *.sqlite
 
+# personal config #
+######################
+*.user
+*.directory
+
 # OS generated files #
 ######################
 .DS_Store
