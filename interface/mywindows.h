@@ -14,9 +14,11 @@ Q_OBJECT
 private:
     QGridLayout      *m_main_layout  = new QGridLayout(this);
     QFormLayout      *m_save_layout  = new QFormLayout(this);
-    QLineEdit        *m_filename     = new QLineEdit(this);
+    //QLineEdit        *m_filename     = new QLineEdit(this);
+    QFileDialog      *file_save      = new QFileDialog(this, "Choose file to save");
     QTextEdit        *m_code         = new QTextEdit(this);
     QPushButton      *m_save         = new QPushButton("save", this);
+    QPushButton      *m_load         = new QPushButton("load", this);
     QPushButton      *m_run          = new QPushButton("run", this);
     SvgView          *m_SVG          ;
     // QSvgWidget       *m_SVG          = new QSvgWidget(QString("test.svg"), this);
@@ -26,7 +28,9 @@ private:
 
 public slots:
     void savetofile();
+    void loadFromFile();
     void renderSvg();
+
 
 public:
     MyWindows();

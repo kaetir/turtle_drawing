@@ -48,11 +48,27 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    NUMBER = 258,
-    IDENTIFIER = 259,
-    REPEAT = 260,
-    ENSEMBLE = 261,
-    TAILLE = 262
+    SI = 258,
+    ALORS = 259,
+    SINON = 260,
+    FINSI = 261,
+    JMP = 262,
+    JNZ = 263,
+    OUT = 264,
+    LABEL = 265,
+    GOTO = 266,
+    STRING = 267,
+    NUMBER = 268,
+    IDENTIFIER = 269,
+    POUR = 270,
+    FINPOUR = 271,
+    TAILLE = 272,
+    COULEUR = 273,
+    FORWARD = 274,
+    ROTATE = 275,
+    PENDOWN = 276,
+    PENUP = 277,
+    GOTOXY = 278
   };
 #endif
 
@@ -61,12 +77,14 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 15 "turtle.bison" /* yacc.c:1906  */
+#line 96 "turtle.bison" /* yacc.c:1906  */
 
 	double valeur;
-	char nom[50];
+	char nom[100];
+	t_adresse adresse;
+	char chaine[100];
 
-#line 70 "projet.bison.hpp" /* yacc.c:1906  */
+#line 88 "projet.bison.hpp" /* yacc.c:1906  */
 };
 
 typedef union YYSTYPE YYSTYPE;

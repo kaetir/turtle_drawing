@@ -3,7 +3,7 @@
 
 taille x y      -> definit la zone de dessin
 
-couleur r g b   -> définit la couleur du trait
+couleur #xxxxxx -> définit la couleur du trait
 
 taillec x       -> définit la taille du curseur à x
 
@@ -15,6 +15,10 @@ position x y    -> positionne le curseur en x,y
 
 poser           -> pose le stylo sur la feuille pour dessiner
 lever           -> leve le stylo de  la feuille pous ne plus dessiner
+
+
+label "xxx"		-> place un label pour pouvoir y goto
+goto "xxx" 		-> saute au label
 
 
 //Pour les boucles //

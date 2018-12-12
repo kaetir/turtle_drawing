@@ -2,7 +2,75 @@
 
 # TEST
 
+# -90 : 90° a gauche
+#  90 : 90° a droite
 
-taille 
+taille 10 10
 
+a = 1
+goto "I"
+
+couleur "#00FF00"
+# T
+label "T"
+
+avancer 100
+tourner 180
+avancer 50
+tourner -90
+avancer 100
+
+lever
+tourner -90
+avancer 100
+
+
+
+poser
+
+si 1
+alors 
+	couleur "#FF0000"
+sinon 
+	couleur "#00FF00"
+finsi
+
+poser
+
+# H 
+label "H"
+
+tourner -90
+avancer 100
+tourner 180
+avancer 50
+tourner -90
+avancer 50
+tourner -90
+avancer 50
+tourner 180
+avancer 100
+
+
+lever
+tourner -90
+avancer 100
+
+couleur "#0000FF"
+poser
+
+
+# I 
+label "I"
+
+tourner -90
+avancer 100
+tourner 180
+avancer 100
+
+lever
+tourner -90
+avancer 100
+
+# B
 
