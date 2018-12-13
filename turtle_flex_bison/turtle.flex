@@ -37,6 +37,7 @@ poser								{ return PENDOWN;								}
 lever								{ return PENUP;									}
 position	                    	{ return GOTOXY;                   				}
 tourner		                    	{ return ROTATE ;                 				}
+angle		                    	{ return SETANGLE ;                				}
 avancer		                    	{ return FORWARD;                  				}
 [A-Za-z_][0-9A-Za-z_]*          	{ strcpy(yylval.nom,yytext); return IDENTIFIER; }
 \r\n 								{ return '\n';		   							}

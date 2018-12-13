@@ -11,8 +11,8 @@ int yyerror(const char *s) { printf("%s\n", s); return 0;}
 
 
 // map des variables
-map<string, double> variables;
-// vector<pair<int,double>> variables;
+// map<string, double> variables;
+vector<pair<string,double>> variables;
 
 // fichier dans lequel on affiche
 
@@ -37,6 +37,7 @@ map<int, int> fors ;
 size_t ic = 0;   // compteur instruction 
 
 inline void ins(int c, double d) { instructions.push_back(make_pair(c, d)); ic++;};
+inline void insvar(string c, double d) { variables.push_back(make_pair(c, d)); ic++;};
 
 	
 
@@ -107,6 +108,7 @@ typedef struct adr {
 %token COULEURRGB
 %token FORWARD
 %token ROTATE
+%token SETANGLE
 %token PENDOWN
 %token PENUP
 %token GOTOXY
@@ -133,6 +135,7 @@ instruction : expression                	{ ins(OUT,0); 	                        
 | LARGEUR expression 						{ ins(LARGEUR, 0); /*cout << "avance " << $2 << endl;     */                }
 | FORWARD expression 						{ ins(FORWARD, 0); /*cout << "avance " << $2 << endl;     */                }
 | ROTATE expression  						{ ins(ROTATE , 0); /*cout << "tourne " << $2 << endl;     */                }
+| SETANGLE expression  						{ ins(SETANGLE , 0); /*cout << "tourne " << $2 << endl;     */                }
 | COULEUR STRING  							{ ins(COULEUR, 0); zoli[ic-1].push_back($2);  								}
 | COULEUR expression expression expression  { ins(COULEURRGB, 0);														}
 | IDENTIFIER '=' expression             	{ variables[$1] = $3; 														}
@@ -190,6 +193,7 @@ switch (instruction){
 	case PENDOWN	: return "PDN";
 	case PENUP	  	: return "PUP";
 	case ROTATE		: return "ROT";
+	case SETANGLE	: return "SAG";
 	case POUR     	: return "FOR";	
 	case FINPOUR  	: return "FFR";	
 	case OUT     	: return "OUT";	
@@ -363,6 +367,12 @@ void run_program(turtle my_turtle){
 			case ROTATE :
 			x = depiler(pile);
 			my_turtle.tourner(x);
+			ic++;
+			break;
+
+			case SETANGLE :
+			x = depiler(pile);
+			my_turtle.theta = x ;
 			ic++;
 			break;
 			
