@@ -60,15 +60,21 @@ extern int yydebug;
     STRING = 267,
     NUMBER = 268,
     IDENTIFIER = 269,
-    POUR = 270,
-    FINPOUR = 271,
-    TAILLE = 272,
-    COULEUR = 273,
-    FORWARD = 274,
-    ROTATE = 275,
-    PENDOWN = 276,
-    PENUP = 277,
-    GOTOXY = 278
+    VAR = 270,
+    POUR = 271,
+    FAIRE = 272,
+    FINPOUR = 273,
+    PATH = 274,
+    ENDPATH = 275,
+    TAILLE = 276,
+    LARGEUR = 277,
+    COULEUR = 278,
+    COULEURRGB = 279,
+    FORWARD = 280,
+    ROTATE = 281,
+    PENDOWN = 282,
+    PENUP = 283,
+    GOTOXY = 284
   };
 #endif
 
@@ -77,14 +83,14 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 96 "turtle.bison" /* yacc.c:1906  */
+#line 62 "turtle.bison" /* yacc.c:1906  */
 
 	double valeur;
 	char nom[100];
 	t_adresse adresse;
 	char chaine[100];
 
-#line 88 "projet.bison.hpp" /* yacc.c:1906  */
+#line 94 "projet.bison.hpp" /* yacc.c:1906  */
 };
 
 typedef union YYSTYPE YYSTYPE;

@@ -53,14 +53,18 @@ OBJECTS_DIR   = ./
 SOURCES       = ../interface/main.cpp \
 		../interface/mywindows.cpp \
 		../interface/turtle.cpp \
-		../interface/svgview.cpp moc_mywindows.cpp \
-		moc_svgview.cpp
+		../interface/svgview.cpp \
+		../interface/highlighter.cpp moc_mywindows.cpp \
+		moc_svgview.cpp \
+		moc_highlighter.cpp
 OBJECTS       = main.o \
 		mywindows.o \
 		turtle.o \
 		svgview.o \
+		highlighter.o \
 		moc_mywindows.o \
-		moc_svgview.o
+		moc_svgview.o \
+		moc_highlighter.o
 DIST          = ../interface/exemple.turtle \
 		../interface/turtle.flex \
 		../interface/turtle.bison \
@@ -255,10 +259,12 @@ DIST          = ../interface/exemple.turtle \
 		/mnt/porn/Qt/5.11.2/gcc_64/mkspecs/features/lex.prf \
 		../interface/turtle_drawing.pro ../interface/mywindows.h \
 		../interface/turtle.h \
-		../interface/svgview.h ../interface/main.cpp \
+		../interface/svgview.h \
+		../interface/highlighter.h ../interface/main.cpp \
 		../interface/mywindows.cpp \
 		../interface/turtle.cpp \
-		../interface/svgview.cpp
+		../interface/svgview.cpp \
+		../interface/highlighter.cpp
 QMAKE_TARGET  = turtle_drawing
 DESTDIR       = 
 TARGET        = turtle_drawing
@@ -676,8 +682,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /mnt/porn/Qt/5.11.2/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../interface/mywindows.h ../interface/turtle.h ../interface/svgview.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../interface/main.cpp ../interface/mywindows.cpp ../interface/turtle.cpp ../interface/svgview.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../interface/mywindows.h ../interface/turtle.h ../interface/svgview.h ../interface/highlighter.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../interface/main.cpp ../interface/mywindows.cpp ../interface/turtle.cpp ../interface/svgview.cpp ../interface/highlighter.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -714,9 +720,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /mnt/porn/Qt/5.11.2/gcc_64/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -Wall -W -dM -E -o moc_predefs.h /mnt/porn/Qt/5.11.2/gcc_64/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_mywindows.cpp moc_svgview.cpp
+compiler_moc_header_make_all: moc_mywindows.cpp moc_svgview.cpp moc_highlighter.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mywindows.cpp moc_svgview.cpp
+	-$(DEL_FILE) moc_mywindows.cpp moc_svgview.cpp moc_highlighter.cpp
 moc_mywindows.cpp: /mnt/porn/Qt/5.11.2/gcc_64/include/QtWidgets/QtWidgets \
 		/mnt/porn/Qt/5.11.2/gcc_64/include/QtWidgets/QtWidgetsDepends \
 		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/QtCore \
@@ -1172,6 +1178,10 @@ moc_mywindows.cpp: /mnt/porn/Qt/5.11.2/gcc_64/include/QtWidgets/QtWidgets \
 		../interface/svgview.h \
 		/mnt/porn/Qt/5.11.2/gcc_64/include/QtWidgets/QGraphicsView \
 		../interface/turtle.h \
+		../interface/highlighter.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/QSyntaxHighlighter \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/QTextCharFormat \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/QRegularExpression \
 		../interface/mywindows.h \
 		moc_predefs.h \
 		/mnt/porn/Qt/5.11.2/gcc_64/bin/moc
@@ -1292,6 +1302,119 @@ moc_svgview.cpp: /mnt/porn/Qt/5.11.2/gcc_64/include/QtWidgets/QGraphicsView \
 		moc_predefs.h \
 		/mnt/porn/Qt/5.11.2/gcc_64/bin/moc
 	/mnt/porn/Qt/5.11.2/gcc_64/bin/moc $(DEFINES) --include /home/thibault/Dropbox/CIR3/Théorie_des_languages/turtle_drawing/build-turtle_drawing-Desktop_Qt_5_11_2_GCC_64bit-Release/moc_predefs.h -I/mnt/porn/Qt/5.11.2/gcc_64/mkspecs/linux-g++ -I/home/thibault/Dropbox/CIR3/Théorie_des_languages/turtle_drawing/interface -I/mnt/porn/Qt/5.11.2/gcc_64/include -I/mnt/porn/Qt/5.11.2/gcc_64/include/QtSvg -I/mnt/porn/Qt/5.11.2/gcc_64/include/QtOpenGL -I/mnt/porn/Qt/5.11.2/gcc_64/include/QtWidgets -I/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui -I/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore -I. -I/usr/include/c++/8.2.1 -I/usr/include/c++/8.2.1/x86_64-pc-linux-gnu -I/usr/include/c++/8.2.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include-fixed -I/usr/include ../interface/svgview.h -o moc_svgview.cpp
+
+moc_highlighter.cpp: /mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/QSyntaxHighlighter \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qsyntaxhighlighter.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qtguiglobal.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qglobal.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qconfig-bootstrapped.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qconfig.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qtcore-config.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qsystemdetection.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qprocessordetection.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qcompilerdetection.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qtypeinfo.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qsysinfo.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qlogging.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qflags.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qatomic.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qbasicatomic.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qgenericatomic.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qatomic_msvc.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qglobalstatic.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qmutex.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qnumeric.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qversiontagging.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qtgui-config.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qobject.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qobjectdefs.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qnamespace.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qstring.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qchar.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qbytearray.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qrefcount.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qarraydata.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qstringliteral.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qstringalgorithms.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qstringview.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qstringbuilder.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qlist.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qalgorithms.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qiterator.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qhashfunctions.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qpair.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qbytearraylist.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qstringlist.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qregexp.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qstringmatcher.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qcoreevent.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qscopedpointer.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qmetatype.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qvarlengtharray.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qcontainerfwd.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qobject_impl.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qtextobject.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qtextformat.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qcolor.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qrgb.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qrgba64.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qfont.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qwindowdefs.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qwindowdefs_win.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qsharedpointer.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qshareddata.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qhash.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qvector.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qpoint.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qvariant.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qmap.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qdebug.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qtextstream.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qiodevice.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qlocale.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qset.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qcontiguouscache.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qpen.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qbrush.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qmatrix.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qpolygon.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qrect.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qmargins.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qsize.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qregion.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qdatastream.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qline.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qtransform.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qpainterpath.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qimage.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qpaintdevice.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qpixelformat.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qpixmap.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qtextoption.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qtextlayout.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qevent.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qkeysequence.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qurl.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qurlquery.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qfile.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qfiledevice.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qvector2d.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qtouchdevice.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qglyphrun.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qrawfont.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qfontdatabase.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qtextcursor.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/QTextCharFormat \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/QRegularExpression \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qregularexpression.h \
+		../interface/highlighter.h \
+		moc_predefs.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/bin/moc
+	/mnt/porn/Qt/5.11.2/gcc_64/bin/moc $(DEFINES) --include /home/thibault/Dropbox/CIR3/Théorie_des_languages/turtle_drawing/build-turtle_drawing-Desktop_Qt_5_11_2_GCC_64bit-Release/moc_predefs.h -I/mnt/porn/Qt/5.11.2/gcc_64/mkspecs/linux-g++ -I/home/thibault/Dropbox/CIR3/Théorie_des_languages/turtle_drawing/interface -I/mnt/porn/Qt/5.11.2/gcc_64/include -I/mnt/porn/Qt/5.11.2/gcc_64/include/QtSvg -I/mnt/porn/Qt/5.11.2/gcc_64/include/QtOpenGL -I/mnt/porn/Qt/5.11.2/gcc_64/include/QtWidgets -I/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui -I/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore -I. -I/usr/include/c++/8.2.1 -I/usr/include/c++/8.2.1/x86_64-pc-linux-gnu -I/usr/include/c++/8.2.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include-fixed -I/usr/include ../interface/highlighter.h -o moc_highlighter.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -1765,7 +1888,11 @@ main.o: ../interface/main.cpp /mnt/porn/Qt/5.11.2/gcc_64/include/QtWidgets/QAppl
 		/mnt/porn/Qt/5.11.2/gcc_64/include/QtWidgets/qtwidgetsversion.h \
 		../interface/svgview.h \
 		/mnt/porn/Qt/5.11.2/gcc_64/include/QtWidgets/QGraphicsView \
-		../interface/turtle.h
+		../interface/turtle.h \
+		../interface/highlighter.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/QSyntaxHighlighter \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/QTextCharFormat \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/QRegularExpression
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../interface/main.cpp
 
 mywindows.o: ../interface/mywindows.cpp ../interface/mywindows.h \
@@ -2223,7 +2350,11 @@ mywindows.o: ../interface/mywindows.cpp ../interface/mywindows.h \
 		/mnt/porn/Qt/5.11.2/gcc_64/include/QtWidgets/qtwidgetsversion.h \
 		../interface/svgview.h \
 		/mnt/porn/Qt/5.11.2/gcc_64/include/QtWidgets/QGraphicsView \
-		../interface/turtle.h
+		../interface/turtle.h \
+		../interface/highlighter.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/QSyntaxHighlighter \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/QTextCharFormat \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/QRegularExpression
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mywindows.o ../interface/mywindows.cpp
 
 turtle.o: ../interface/turtle.cpp ../interface/turtle.h \
@@ -2426,11 +2557,125 @@ svgview.o: ../interface/svgview.cpp ../interface/svgview.h \
 		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qsurfaceformat.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o svgview.o ../interface/svgview.cpp
 
+highlighter.o: ../interface/highlighter.cpp ../interface/highlighter.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/QSyntaxHighlighter \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qsyntaxhighlighter.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qtguiglobal.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qglobal.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qconfig-bootstrapped.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qconfig.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qtcore-config.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qsystemdetection.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qprocessordetection.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qcompilerdetection.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qtypeinfo.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qsysinfo.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qlogging.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qflags.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qatomic.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qbasicatomic.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qgenericatomic.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qatomic_msvc.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qglobalstatic.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qmutex.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qnumeric.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qversiontagging.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qtgui-config.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qobject.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qobjectdefs.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qnamespace.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qstring.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qchar.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qbytearray.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qrefcount.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qarraydata.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qstringliteral.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qstringalgorithms.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qstringview.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qstringbuilder.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qlist.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qalgorithms.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qiterator.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qhashfunctions.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qpair.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qbytearraylist.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qstringlist.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qregexp.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qstringmatcher.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qcoreevent.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qscopedpointer.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qmetatype.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qvarlengtharray.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qcontainerfwd.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qobject_impl.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qtextobject.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qtextformat.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qcolor.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qrgb.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qrgba64.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qfont.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qwindowdefs.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qwindowdefs_win.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qsharedpointer.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qshareddata.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qhash.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qvector.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qpoint.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qvariant.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qmap.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qdebug.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qtextstream.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qiodevice.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qlocale.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qset.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qcontiguouscache.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qpen.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qbrush.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qmatrix.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qpolygon.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qrect.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qmargins.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qsize.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qregion.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qdatastream.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qline.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qtransform.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qpainterpath.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qimage.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qpaintdevice.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qpixelformat.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qpixmap.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qtextoption.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qtextlayout.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qevent.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qkeysequence.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qurl.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qurlquery.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qfile.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qfiledevice.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qvector2d.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qtouchdevice.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qglyphrun.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qrawfont.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qfontdatabase.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/qtextcursor.h \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtGui/QTextCharFormat \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/QRegularExpression \
+		/mnt/porn/Qt/5.11.2/gcc_64/include/QtCore/qregularexpression.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o highlighter.o ../interface/highlighter.cpp
+
 moc_mywindows.o: moc_mywindows.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mywindows.o moc_mywindows.cpp
 
 moc_svgview.o: moc_svgview.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_svgview.o moc_svgview.cpp
+
+moc_highlighter.o: moc_highlighter.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_highlighter.o moc_highlighter.cpp
 
 ####### Install
 

@@ -7,70 +7,39 @@
 
 taille 10 10
 
-a = 1
-goto "I"
+taillec 10
 
-couleur "#00FF00"
-# T
-label "T"
+a = 10
+b = 10
+c = 10
 
-avancer 100
-tourner 180
-avancer 50
-tourner -90
-avancer 100
+position 300 300
 
-lever
-tourner -90
-avancer 100
+pour ( 10 ) do
+#	pour ( 100 ) do
+#		b = 0
+#		pour (100) faire
+#			c = 0
+#			pour (100) faire
+#
+#				couleur a (b)	 c
+#				avancer 4+(a+b+c)
+#				
+#	
+#			finpour
+#			c = c + 2
+#		finpour
+#		b = b + 2
+#	finpour
+	b = 2 + a
+	#avancer a
+	#tourner 1
+finpour
 
+goto "end"
 
+# partie non exécuté
+avancer 300
 
-poser
-
-si 1
-alors 
-	couleur "#FF0000"
-sinon 
-	couleur "#00FF00"
-finsi
-
-poser
-
-# H 
-label "H"
-
-tourner -90
-avancer 100
-tourner 180
-avancer 50
-tourner -90
-avancer 50
-tourner -90
-avancer 50
-tourner 180
-avancer 100
-
-
-lever
-tourner -90
-avancer 100
-
-couleur "#0000FF"
-poser
-
-
-# I 
-label "I"
-
-tourner -90
-avancer 100
-tourner 180
-avancer 100
-
-lever
-tourner -90
-avancer 100
-
-# B
+label "end"
 

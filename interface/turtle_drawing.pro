@@ -29,12 +29,14 @@ SOURCES += \
         main.cpp \
     mywindows.cpp \
     turtle.cpp \
-    svgview.cpp
+    svgview.cpp \
+    highlighter.cpp
 
 HEADERS += \
     mywindows.h \
     turtle.h \
-    svgview.h
+    svgview.h \
+    highlighter.h
 
 
 # Default rules for deployment.

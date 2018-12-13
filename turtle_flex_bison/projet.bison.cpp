@@ -67,99 +67,65 @@
 /* First part of user prologue.  */
 #line 1 "turtle.bison" /* yacc.c:338  */
 
-	#include <iostream>
-	#include <vector>
-	#include <fstream>
-	#include <map>
-	#include <string>
-	#include <cmath>
 
-	using namespace std;
 
-	// FLEX
-	extern FILE *yyin;
-	extern int yylex ();
-	int yyerror(const char *s) { printf("%s\n", s); return 0;}
+#include "turtle_class.h"
 
-	// map des variables
-	map<string, double> variables;
+
+// FLEX
+extern FILE *yyin;
+extern int yylex ();
+int yyerror(const char *s) { printf("%s\n", s); return 0;}
+
+
+// map des variables
+map<string, double> variables;
+
+// fichier dans lequel on affiche
+
+// fstream file("bite.html", ios_base::out);
+fstream file("./turtle.svg", ios_base::out);
+
+// Stockage des instructions
+vector<pair<int,double>> instructions;
+
+// Stockage des couleurs
+map<int, vector<string>> zoli ;
+map<int, int> colorcount;
+
+// Stockage des labels pour les goto
+map<string, int> labels ;
+string labelTosearch;
+
+// Stockage des FOR on stock l'ic et le nombre de rep
+map<int, int> fors ;
+
+
+size_t ic = 0;   // compteur instruction 
+inline void ins(int c, double d) { instructions.push_back(make_pair(c, d)); ic++;};
+
 	
-	// fichier dans lequel on affiche
-	fstream file("bite.html", ios_base::out);
-	
-	// Stockage des instructions
-	vector<pair<int,double>> instructions;
-
-	// Stockage des couleurs
-	map<int, string> zoli ;
-
-	// Stockage des labels pour les goto
-	map<string, int> labels ;
-	string labelTosearch;
-
-	size_t ic = 0;   // compteur instruction 
-	inline void ins(int c, double d) { instructions.push_back(make_pair(c, d)); ic++;};
-
-	class  turtle 	{
-
-		public:
-		// taille de la map de dessin
-		int taile_x= 1000, taile_y=1000;
-	
-
-
-		// position et orientation de la turtle
-		float x = 10;
-		float y = 10;
-		float theta = 0;
-		// nombre du trait
-		int  trait = 1;
-
-		// savoir si on déssine ou pas
-		// stylo posay
-		bool penDown = true;
-
-		// largeur
-		size_t largeur = 4;
-		
-		string couleur= "\"#00FF00\"";
 
 
 
-
-		turtle(){}
-		~turtle(){}
-	
-		// permet de dire si on trace une ligne (comme avec un stylo sur une feuille)
-		void baisser(){penDown = true;}
-		void lever(){penDown = false;}
-	
-		// avance d'une distance entière
-			void avancer(double x){
-				this->x += cos(theta) * x; 
-				this->y += sin(theta) * x; 
-				trait++;
-			}
-		// tourne d'un angle en degré
-			void tourner(double t){
-				theta += (t/180*M_PI);
-			}
-	
-		// se déplace instantanément a une position donnée sans tracer
-			void gotoXY(int , int);
-	
-			void setSize(unsigned int );
-	};
+template< typename T >
+std::string int_to_hex( T i )
+{
+	std::stringstream stream;
+	  stream << std::setfill ('0') << std::setw(2) 
+	<< std::hex << i;
+	return stream.str();
+}
 
 
-	// structure pour stocker les adresses pour les sauts condistionnels et autres...
-	typedef struct adr {
-		int ic_goto; 
-		int ic_false;
-	} t_adresse; 
+typedef struct adr {
+	int ic_goto; 
+	int ic_false;
+} t_adresse; 
 
 
-#line 163 "projet.bison.cpp" /* yacc.c:338  */
+
+#line 129 "projet.bison.cpp" /* yacc.c:338  */
 # ifndef YY_NULLPTR
 #  if defined __cplusplus
 #   if 201103L <= __cplusplus
@@ -209,15 +175,21 @@ extern int yydebug;
     STRING = 267,
     NUMBER = 268,
     IDENTIFIER = 269,
-    POUR = 270,
-    FINPOUR = 271,
-    TAILLE = 272,
-    COULEUR = 273,
-    FORWARD = 274,
-    ROTATE = 275,
-    PENDOWN = 276,
-    PENUP = 277,
-    GOTOXY = 278
+    VAR = 270,
+    POUR = 271,
+    FAIRE = 272,
+    FINPOUR = 273,
+    PATH = 274,
+    ENDPATH = 275,
+    TAILLE = 276,
+    LARGEUR = 277,
+    COULEUR = 278,
+    COULEURRGB = 279,
+    FORWARD = 280,
+    ROTATE = 281,
+    PENDOWN = 282,
+    PENUP = 283,
+    GOTOXY = 284
   };
 #endif
 
@@ -226,14 +198,14 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 96 "turtle.bison" /* yacc.c:353  */
+#line 62 "turtle.bison" /* yacc.c:353  */
 
 	double valeur;
 	char nom[100];
 	t_adresse adresse;
 	char chaine[100];
 
-#line 237 "projet.bison.cpp" /* yacc.c:353  */
+#line 209 "projet.bison.cpp" /* yacc.c:353  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -481,21 +453,21 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  2
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   99
+#define YYLAST   117
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  32
+#define YYNTOKENS  38
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  8
+#define YYNNTS  9
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  28
+#define YYNRULES  33
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  60
+#define YYNSTATES  69
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   278
+#define YYMAXUTOK   284
 
 #define YYTRANSLATE(YYX)                                                \
   ((unsigned) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -505,12 +477,12 @@ union yyalloc
 static const yytype_uint8 yytranslate[] =
 {
        0,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-      28,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+      34,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-      30,    31,    26,    24,     2,    25,     2,    27,     2,     2,
+      36,    37,    32,    30,     2,    31,     2,    33,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,    29,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,    35,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -531,16 +503,18 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17,    18,    19,    20,    21,    22,    23
+      15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
+      25,    26,    27,    28,    29
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,   144,   144,   145,   148,   149,   150,   151,   152,   153,
-     154,   155,   156,   157,   158,   159,   162,   166,   159,   168,
-     168,   170,   173,   174,   175,   176,   177,   178,   179
+       0,   118,   118,   119,   122,   123,   124,   125,   126,   127,
+     128,   129,   130,   131,   132,   133,   134,   135,   136,   138,
+     141,   145,   138,   148,   149,   148,   151,   154,   155,   156,
+     157,   158,   159,   160
 };
 #endif
 
@@ -550,10 +524,11 @@ static const yytype_uint8 yyrline[] =
 static const char *const yytname[] =
 {
   "$end", "error", "$undefined", "SI", "ALORS", "SINON", "FINSI", "JMP",
-  "JNZ", "OUT", "LABEL", "GOTO", "STRING", "NUMBER", "IDENTIFIER", "POUR",
-  "FINPOUR", "TAILLE", "COULEUR", "FORWARD", "ROTATE", "PENDOWN", "PENUP",
+  "JNZ", "OUT", "LABEL", "GOTO", "STRING", "NUMBER", "IDENTIFIER", "VAR",
+  "POUR", "FAIRE", "FINPOUR", "PATH", "ENDPATH", "TAILLE", "LARGEUR",
+  "COULEUR", "COULEURRGB", "FORWARD", "ROTATE", "PENDOWN", "PENUP",
   "GOTOXY", "'+'", "'-'", "'*'", "'/'", "'\\n'", "'='", "'('", "')'",
-  "$accept", "bloc", "instruction", "$@1", "$@2", "$@3", "$@4",
+  "$accept", "bloc", "instruction", "$@1", "$@2", "$@3", "$@4", "$@5",
   "expression", YY_NULLPTR
 };
 #endif
@@ -565,17 +540,17 @@ static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
-     275,   276,   277,   278,    43,    45,    42,    47,    10,    61,
-      40,    41
+     275,   276,   277,   278,   279,   280,   281,   282,   283,   284,
+      43,    45,    42,    47,    10,    61,    40,    41
 };
 # endif
 
-#define YYPACT_NINF -41
+#define YYPACT_NINF -45
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-41)))
+  (!!((Yystate) == (-45)))
 
-#define YYTABLE_NINF -22
+#define YYTABLE_NINF -27
 
 #define yytable_value_is_error(Yytable_value) \
   0
@@ -584,12 +559,13 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-     -41,    24,   -41,   -12,    -7,    -1,   -41,   -15,   -13,   -12,
-       3,   -12,   -12,   -41,   -41,   -12,   -12,    -9,    52,   -41,
-      71,   -41,   -41,   -12,   -12,    56,   -41,    52,    52,    56,
-      26,   -41,   -12,   -12,   -12,   -12,   -41,    52,    63,    52,
-      52,   -41,   -23,   -23,   -41,   -41,    19,   -41,     0,    45,
-     -41,     9,    45,   -41,    28,     8,   -41,    45,    34,   -41
+     -45,    30,   -45,    -7,   -11,    10,   -45,   -30,    -9,   -45,
+     -45,    -7,    -7,   -10,    -7,    -7,   -45,   -45,    -7,    -7,
+      -2,   -13,   -45,    83,   -45,   -45,    -7,    -7,    68,   -13,
+     -45,    68,   -13,   -13,    68,    58,   -45,    -7,    -7,    -7,
+      -7,   -45,   -13,    75,   -13,    68,   -13,   -45,     6,     6,
+     -45,   -45,    41,   -45,   -13,    13,    31,   -45,   -45,    51,
+      51,    55,    45,    34,   -45,   -45,    51,    63,   -45
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -597,24 +573,25 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       3,    21,     1,     0,     0,     0,    27,    28,     0,     0,
-       0,     0,     0,     5,     6,     0,     0,     0,     4,    28,
-       0,     7,     8,     0,     0,     0,    13,    11,    12,     0,
-       0,     2,     0,     0,     0,     0,    15,    14,     0,    10,
-       9,    26,    22,    23,    24,    25,     0,     3,     0,    19,
-       3,     0,    16,    20,     0,     0,     3,    17,     0,    18
+       3,    26,     1,     0,     0,     0,    32,    33,     0,    10,
+      11,     0,     0,     0,     0,     0,     5,     6,     0,     0,
+       0,     4,    33,     0,     7,     8,     0,     0,     0,    13,
+      16,     0,    14,    15,     0,     0,     2,     0,     0,     0,
+       0,    19,    18,     0,    12,     0,     9,    31,    27,    28,
+      29,    30,     0,    23,    17,     0,     0,     3,     3,    20,
+      24,     0,     0,     0,    25,     3,    21,     0,    22
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -41,   -40,   -41,   -41,   -41,   -41,   -41,    -3
+     -45,   -44,   -45,   -45,   -45,   -45,   -45,   -45,    -3
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     1,    17,    46,    54,    58,    51,    18
+      -1,     1,    20,    52,    61,    67,    56,    62,    21
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -622,58 +599,65 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      20,     6,    19,    34,    35,    21,    25,    49,    27,    28,
-      52,    22,    29,    30,    23,    26,    57,    24,    16,    31,
-      37,    38,    39,    48,     2,    53,    40,     3,    50,    42,
-      43,    44,    45,    55,     4,     5,    56,     6,     7,     8,
-      59,     9,    10,    11,    12,    13,    14,    15,     3,     0,
-      32,    33,    34,    35,    16,     4,     5,    41,     6,     7,
-       8,     0,     9,    10,    11,    12,    13,    14,    15,     6,
-      19,     0,     0,   -21,     0,    16,    32,    33,    34,    35,
-      32,    33,    34,    35,     0,     0,    16,    32,    33,    34,
-      35,     0,     0,     0,    47,    32,    33,    34,    35,    36
+      23,    24,    30,     6,    22,    26,     6,    22,    28,    29,
+      31,    32,    33,    59,    60,    34,    35,    37,    38,    39,
+      40,    66,    25,    42,    43,    44,    19,    27,    45,    19,
+       2,    46,    36,     3,    48,    49,    50,    51,    39,    40,
+       4,     5,    54,     6,     7,    55,     8,    57,    58,     9,
+      10,    11,    12,    13,     3,    14,    15,    16,    17,    18,
+      63,     4,     5,    64,     6,     7,    19,     8,    65,    68,
+       9,    10,    11,    12,    13,     0,    14,    15,    16,    17,
+      18,     6,    22,     0,     0,   -26,     0,    19,    37,    38,
+      39,    40,     0,     0,     0,    47,     0,     0,    37,    38,
+      39,    40,     0,     0,    19,    37,    38,    39,    40,     0,
+       0,     0,    53,    37,    38,    39,    40,    41
 };
 
 static const yytype_int8 yycheck[] =
 {
-       3,    13,    14,    26,    27,    12,     9,    47,    11,    12,
-      50,    12,    15,    16,    29,    12,    56,    30,    30,    28,
-      23,    24,    25,     4,     0,    16,    29,     3,    28,    32,
-      33,    34,    35,     5,    10,    11,    28,    13,    14,    15,
-       6,    17,    18,    19,    20,    21,    22,    23,     3,    -1,
-      24,    25,    26,    27,    30,    10,    11,    31,    13,    14,
-      15,    -1,    17,    18,    19,    20,    21,    22,    23,    13,
-      14,    -1,    -1,    28,    -1,    30,    24,    25,    26,    27,
-      24,    25,    26,    27,    -1,    -1,    30,    24,    25,    26,
-      27,    -1,    -1,    -1,    31,    24,    25,    26,    27,    28
+       3,    12,    12,    13,    14,    35,    13,    14,    11,    12,
+      13,    14,    15,    57,    58,    18,    19,    30,    31,    32,
+      33,    65,    12,    26,    27,    28,    36,    36,    31,    36,
+       0,    34,    34,     3,    37,    38,    39,    40,    32,    33,
+      10,    11,    45,    13,    14,     4,    16,    34,    17,    19,
+      20,    21,    22,    23,     3,    25,    26,    27,    28,    29,
+       5,    10,    11,    18,    13,    14,    36,    16,    34,     6,
+      19,    20,    21,    22,    23,    -1,    25,    26,    27,    28,
+      29,    13,    14,    -1,    -1,    34,    -1,    36,    30,    31,
+      32,    33,    -1,    -1,    -1,    37,    -1,    -1,    30,    31,
+      32,    33,    -1,    -1,    36,    30,    31,    32,    33,    -1,
+      -1,    -1,    37,    30,    31,    32,    33,    34
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,    33,     0,     3,    10,    11,    13,    14,    15,    17,
-      18,    19,    20,    21,    22,    23,    30,    34,    39,    14,
-      39,    12,    12,    29,    30,    39,    12,    39,    39,    39,
-      39,    28,    24,    25,    26,    27,    28,    39,    39,    39,
-      39,    31,    39,    39,    39,    39,    35,    31,     4,    33,
-      28,    38,    33,    16,    36,     5,    28,    33,    37,     6
+       0,    39,     0,     3,    10,    11,    13,    14,    16,    19,
+      20,    21,    22,    23,    25,    26,    27,    28,    29,    36,
+      40,    46,    14,    46,    12,    12,    35,    36,    46,    46,
+      12,    46,    46,    46,    46,    46,    34,    30,    31,    32,
+      33,    34,    46,    46,    46,    46,    46,    37,    46,    46,
+      46,    46,    41,    37,    46,     4,    44,    34,    17,    39,
+      39,    42,    45,     5,    18,    34,    39,    43,     6
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    32,    33,    33,    34,    34,    34,    34,    34,    34,
-      34,    34,    34,    34,    34,    35,    36,    37,    34,    38,
-      34,    34,    39,    39,    39,    39,    39,    39,    39
+       0,    38,    39,    39,    40,    40,    40,    40,    40,    40,
+      40,    40,    40,    40,    40,    40,    40,    40,    40,    41,
+      42,    43,    40,    44,    45,    40,    40,    46,    46,    46,
+      46,    46,    46,    46
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
        0,     2,     3,     0,     1,     1,     1,     2,     2,     3,
-       3,     2,     2,     2,     3,     0,     0,     0,    13,     0,
-       7,     0,     3,     3,     3,     3,     3,     1,     1
+       1,     1,     3,     2,     2,     2,     2,     4,     3,     0,
+       0,     0,    13,     0,     0,     9,     0,     3,     3,     3,
+       3,     3,     1,     1
 };
 
 
@@ -1350,156 +1334,186 @@ yyreduce:
   switch (yyn)
     {
         case 4:
-#line 148 "turtle.bison" /* yacc.c:1645  */
-    { ins(OUT,0); 	                                                              }
-#line 1356 "projet.bison.cpp" /* yacc.c:1645  */
+#line 122 "turtle.bison" /* yacc.c:1645  */
+    { ins(OUT,0); 	                                                            }
+#line 1340 "projet.bison.cpp" /* yacc.c:1645  */
     break;
 
   case 5:
-#line 149 "turtle.bison" /* yacc.c:1645  */
-    { ins(PENDOWN, 0);                                                            }
-#line 1362 "projet.bison.cpp" /* yacc.c:1645  */
+#line 123 "turtle.bison" /* yacc.c:1645  */
+    { ins(PENDOWN, 0);                                                          }
+#line 1346 "projet.bison.cpp" /* yacc.c:1645  */
     break;
 
   case 6:
-#line 150 "turtle.bison" /* yacc.c:1645  */
-    { ins(PENUP  , 0);                                                            }
-#line 1368 "projet.bison.cpp" /* yacc.c:1645  */
+#line 124 "turtle.bison" /* yacc.c:1645  */
+    { ins(PENUP  , 0);                                                          }
+#line 1352 "projet.bison.cpp" /* yacc.c:1645  */
     break;
 
   case 7:
-#line 151 "turtle.bison" /* yacc.c:1645  */
-    { labels[(yyvsp[0].chaine)] = ic; ins(LABEL  , 0);			                                  }
-#line 1374 "projet.bison.cpp" /* yacc.c:1645  */
+#line 125 "turtle.bison" /* yacc.c:1645  */
+    { labels[(yyvsp[0].chaine)] = ic; ins(LABEL  , 0);			                                }
+#line 1358 "projet.bison.cpp" /* yacc.c:1645  */
     break;
 
   case 8:
-#line 152 "turtle.bison" /* yacc.c:1645  */
-    { labelTosearch=(yyvsp[0].chaine); ins(GOTO  , 0);			                                  }
-#line 1380 "projet.bison.cpp" /* yacc.c:1645  */
+#line 126 "turtle.bison" /* yacc.c:1645  */
+    { labelTosearch=(yyvsp[0].chaine); ins(GOTO  , 0);			                                }
+#line 1364 "projet.bison.cpp" /* yacc.c:1645  */
     break;
 
   case 9:
-#line 153 "turtle.bison" /* yacc.c:1645  */
-    { ins(GOTOXY  , 0);                                                           }
-#line 1386 "projet.bison.cpp" /* yacc.c:1645  */
+#line 127 "turtle.bison" /* yacc.c:1645  */
+    { ins(GOTOXY   , 0);                                                        }
+#line 1370 "projet.bison.cpp" /* yacc.c:1645  */
     break;
 
   case 10:
-#line 154 "turtle.bison" /* yacc.c:1645  */
-    { ins(TAILLE , 0); /*cout << "taille " << $2 << ' ' << $3 << endl;    */      }
-#line 1392 "projet.bison.cpp" /* yacc.c:1645  */
+#line 128 "turtle.bison" /* yacc.c:1645  */
+    { ins(PATH 	   , 0);                                                        }
+#line 1376 "projet.bison.cpp" /* yacc.c:1645  */
     break;
 
   case 11:
-#line 155 "turtle.bison" /* yacc.c:1645  */
-    { ins(FORWARD, 0); /*cout << "avance " << $2 << endl;     */                  }
-#line 1398 "projet.bison.cpp" /* yacc.c:1645  */
+#line 129 "turtle.bison" /* yacc.c:1645  */
+    { ins(ENDPATH  , 0);                                                        }
+#line 1382 "projet.bison.cpp" /* yacc.c:1645  */
     break;
 
   case 12:
-#line 156 "turtle.bison" /* yacc.c:1645  */
-    { ins(ROTATE , 0); /*cout << "tourne " << $2 << endl;     */                  }
-#line 1404 "projet.bison.cpp" /* yacc.c:1645  */
+#line 130 "turtle.bison" /* yacc.c:1645  */
+    { ins(TAILLE , 0); /*cout << "taille " << $2 << ' ' << $3 << endl;    */    }
+#line 1388 "projet.bison.cpp" /* yacc.c:1645  */
     break;
 
   case 13:
-#line 157 "turtle.bison" /* yacc.c:1645  */
-    { ins(COULEUR, 0); /*cout << "Couleur " << $2 << endl; */zoli[ic-1] = (yyvsp[0].chaine);     }
-#line 1410 "projet.bison.cpp" /* yacc.c:1645  */
+#line 131 "turtle.bison" /* yacc.c:1645  */
+    { ins(LARGEUR, 0); /*cout << "avance " << $2 << endl;     */                }
+#line 1394 "projet.bison.cpp" /* yacc.c:1645  */
     break;
 
   case 14:
-#line 158 "turtle.bison" /* yacc.c:1645  */
-    { variables[(yyvsp[-2].nom)] = (yyvsp[0].valeur); cout << "Affectation de " << (yyvsp[0].valeur) << " à " << (yyvsp[-2].nom) << endl; }
-#line 1416 "projet.bison.cpp" /* yacc.c:1645  */
+#line 132 "turtle.bison" /* yacc.c:1645  */
+    { ins(FORWARD, 0); /*cout << "avance " << $2 << endl;     */                }
+#line 1400 "projet.bison.cpp" /* yacc.c:1645  */
     break;
 
   case 15:
-#line 159 "turtle.bison" /* yacc.c:1645  */
-    { (yyvsp[-2].adresse).ic_goto = ic;  
-					   ins (JNZ,0);
-					   }
-#line 1424 "projet.bison.cpp" /* yacc.c:1645  */
+#line 133 "turtle.bison" /* yacc.c:1645  */
+    { ins(ROTATE , 0); /*cout << "tourne " << $2 << endl;     */                }
+#line 1406 "projet.bison.cpp" /* yacc.c:1645  */
     break;
 
   case 16:
-#line 162 "turtle.bison" /* yacc.c:1645  */
+#line 134 "turtle.bison" /* yacc.c:1645  */
+    { ins(COULEUR, 0); zoli[ic-1].push_back((yyvsp[0].chaine));  								}
+#line 1412 "projet.bison.cpp" /* yacc.c:1645  */
+    break;
+
+  case 17:
+#line 135 "turtle.bison" /* yacc.c:1645  */
+    { ins(COULEURRGB, 0);														}
+#line 1418 "projet.bison.cpp" /* yacc.c:1645  */
+    break;
+
+  case 18:
+#line 136 "turtle.bison" /* yacc.c:1645  */
+    { ins(VAR , 0); 															}
+#line 1424 "projet.bison.cpp" /* yacc.c:1645  */
+    break;
+
+  case 19:
+#line 138 "turtle.bison" /* yacc.c:1645  */
+    { (yyvsp[-2].adresse).ic_goto = ic;  
+					   ins (JNZ,0);
+					   }
+#line 1432 "projet.bison.cpp" /* yacc.c:1645  */
+    break;
+
+  case 20:
+#line 141 "turtle.bison" /* yacc.c:1645  */
     { (yyvsp[-6].adresse).ic_false = ic;
 					   ins (JMP,0);
 					   instructions[(yyvsp[-6].adresse).ic_goto].second = ic;  
 					   }
-#line 1433 "projet.bison.cpp" /* yacc.c:1645  */
+#line 1441 "projet.bison.cpp" /* yacc.c:1645  */
     break;
 
-  case 17:
-#line 166 "turtle.bison" /* yacc.c:1645  */
+  case 21:
+#line 145 "turtle.bison" /* yacc.c:1645  */
     { instructions[(yyvsp[-10].adresse).ic_false].second = ic; }
-#line 1439 "projet.bison.cpp" /* yacc.c:1645  */
-    break;
-
-  case 18:
-#line 167 "turtle.bison" /* yacc.c:1645  */
-    {   }
-#line 1445 "projet.bison.cpp" /* yacc.c:1645  */
-    break;
-
-  case 19:
-#line 168 "turtle.bison" /* yacc.c:1645  */
-    { ins(POUR  , 0); for (int i =0; i<(yyvsp[-2].valeur); i++) cout << "pour" << endl;   }
-#line 1451 "projet.bison.cpp" /* yacc.c:1645  */
-    break;
-
-  case 20:
-#line 169 "turtle.bison" /* yacc.c:1645  */
-    {   }
-#line 1457 "projet.bison.cpp" /* yacc.c:1645  */
+#line 1447 "projet.bison.cpp" /* yacc.c:1645  */
     break;
 
   case 22:
-#line 173 "turtle.bison" /* yacc.c:1645  */
-    { ins('+', 0);}
-#line 1463 "projet.bison.cpp" /* yacc.c:1645  */
+#line 146 "turtle.bison" /* yacc.c:1645  */
+    {   }
+#line 1453 "projet.bison.cpp" /* yacc.c:1645  */
     break;
 
   case 23:
-#line 174 "turtle.bison" /* yacc.c:1645  */
-    { ins('-', 0);}
-#line 1469 "projet.bison.cpp" /* yacc.c:1645  */
+#line 148 "turtle.bison" /* yacc.c:1645  */
+    { fors[ic]=(yyvsp[-1].valeur); ins(POUR  , 0); }
+#line 1459 "projet.bison.cpp" /* yacc.c:1645  */
     break;
 
   case 24:
-#line 175 "turtle.bison" /* yacc.c:1645  */
-    { ins('*', 0);}
-#line 1475 "projet.bison.cpp" /* yacc.c:1645  */
+#line 149 "turtle.bison" /* yacc.c:1645  */
+    {   }
+#line 1465 "projet.bison.cpp" /* yacc.c:1645  */
     break;
 
   case 25:
-#line 176 "turtle.bison" /* yacc.c:1645  */
-    { ins('/', 0);}
-#line 1481 "projet.bison.cpp" /* yacc.c:1645  */
-    break;
-
-  case 26:
-#line 177 "turtle.bison" /* yacc.c:1645  */
-    { }
-#line 1487 "projet.bison.cpp" /* yacc.c:1645  */
+#line 150 "turtle.bison" /* yacc.c:1645  */
+    { ins(FINPOUR  , 0);  }
+#line 1471 "projet.bison.cpp" /* yacc.c:1645  */
     break;
 
   case 27:
-#line 178 "turtle.bison" /* yacc.c:1645  */
-    { ins(NUMBER, (yyvsp[0].valeur));}
-#line 1493 "projet.bison.cpp" /* yacc.c:1645  */
+#line 154 "turtle.bison" /* yacc.c:1645  */
+    { ins('+', 0);}
+#line 1477 "projet.bison.cpp" /* yacc.c:1645  */
     break;
 
   case 28:
-#line 179 "turtle.bison" /* yacc.c:1645  */
+#line 155 "turtle.bison" /* yacc.c:1645  */
+    { ins('-', 0);}
+#line 1483 "projet.bison.cpp" /* yacc.c:1645  */
+    break;
+
+  case 29:
+#line 156 "turtle.bison" /* yacc.c:1645  */
+    { ins('*', 0);}
+#line 1489 "projet.bison.cpp" /* yacc.c:1645  */
+    break;
+
+  case 30:
+#line 157 "turtle.bison" /* yacc.c:1645  */
+    { ins('/', 0);}
+#line 1495 "projet.bison.cpp" /* yacc.c:1645  */
+    break;
+
+  case 31:
+#line 158 "turtle.bison" /* yacc.c:1645  */
+    { }
+#line 1501 "projet.bison.cpp" /* yacc.c:1645  */
+    break;
+
+  case 32:
+#line 159 "turtle.bison" /* yacc.c:1645  */
+    { ins(NUMBER, (yyvsp[0].valeur));}
+#line 1507 "projet.bison.cpp" /* yacc.c:1645  */
+    break;
+
+  case 33:
+#line 160 "turtle.bison" /* yacc.c:1645  */
     { ins(IDENTIFIER, variables[(yyvsp[0].nom)]);}
-#line 1499 "projet.bison.cpp" /* yacc.c:1645  */
+#line 1513 "projet.bison.cpp" /* yacc.c:1645  */
     break;
 
 
-#line 1503 "projet.bison.cpp" /* yacc.c:1645  */
+#line 1517 "projet.bison.cpp" /* yacc.c:1645  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1726,9 +1740,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 184 "turtle.bison" /* yacc.c:1903  */
-
-
+#line 165 "turtle.bison" /* yacc.c:1903  */
 
 
 
@@ -1736,19 +1748,27 @@ yyreturn:
 string nom(int instruction){
 switch (instruction){
 	case '+'     	: return "ADD";
+	case '-'     	: return "SUB";
 	case '*'     	: return "MUL";
+	case '/'     	: return "DIV";
 	case NUMBER  	: return "NUM";
 	case LABEL  	: return "LBL";
 	case GOTO   	: return "GOT";
 	case GOTOXY  	: return "GXY";
+	case PATH	  	: return "PTH";
+	case ENDPATH  	: return "EPH";
 	case TAILLE  	: return "TAL";
+	case LARGEUR  	: return "LRG";
 	case IDENTIFIER : return "IDE";
+	case VAR 		: return "VAR";
 	case COULEUR  	: return "CLR";
+	case COULEURRGB : return "RGB";
 	case FORWARD  	: return "FWD";
 	case PENDOWN	: return "PDN";
 	case PENUP	  	: return "PUP";
 	case ROTATE		: return "ROT";
 	case POUR     	: return "FOR";	
+	case FINPOUR  	: return "FFR";	
 	case OUT     	: return "OUT";	
 	case JNZ     	: return "JNZ";   // Jump if not zero
 	case JMP     	: return "JMP";   // Unconditional Jump
@@ -1775,6 +1795,7 @@ double depiler(vector<double> &pile) {
 void run_program(turtle my_turtle){
 	vector<double> pile; 
 	double x,y;
+	double r,g,b;
 	string c;
 
 	cout << "===== EXECUTION =====" << endl;
@@ -1791,6 +1812,13 @@ void run_program(turtle my_turtle){
 			pile.push_back(y+x);
 			ic++;
 			break;
+			
+			case '-':
+			x = depiler(pile);
+			y = depiler(pile);
+			pile.push_back(y-x);
+			ic++;
+			break;
 
 			case '*':
 			x = depiler(pile);
@@ -1799,11 +1827,24 @@ void run_program(turtle my_turtle){
 			ic++;
 			break;
 
+			case '/':
+			x = depiler(pile);
+			y = depiler(pile);
+			pile.push_back(y/x);
+			ic++;
+			break;
+
 			case FORWARD:
 			x = depiler(pile);
 			if(my_turtle.penDown){
-				::file << "<line x1='"<< my_turtle.x << "' y1='"<< my_turtle.y << "' x2='" << my_turtle.x+cos(my_turtle.theta)*x <<"' y2='"<< my_turtle.y+sin(my_turtle.theta)*x <<"' fill='#00FF00' stroke=" << my_turtle.couleur << " stroke-width=" << my_turtle.largeur << " stroke-miterlimit='10' stroke-dasharray='1000' stroke-dashoffset='0' > </line>" ;
-				// file << "<line x1='"<< x << "' y1='"<< y << "' x2='" << x+cos(theta)*$2 <<"' y2='"<< y+sin(theta)*$2 <<"'  fill='#FFFFFF' stroke='#000000' stroke-width='4' stroke-miterlimit='10' stroke-dasharray='1000' stroke-dashoffset='0'><animate attributeName='x' from='0' to='200' dur='5s' /><animate attributeType='CSS' attributeName='stroke-dashoffset' from='1000' to='0' dur='5s' <!--begin='" << 2*trait <<"s;'--> /><!--animate id='op' attributeType='CSS' attributeName='opacity'from='1' to='0' dur='1s' begin='0s' /--> </line>" ;
+				if(!my_turtle.path){
+					::file << "<line x1='"<< my_turtle.x << "' y1='"<< my_turtle.y << "' x2='" << my_turtle.x+cos(my_turtle.theta)*x <<"' y2='"<< my_turtle.y+sin(my_turtle.theta)*x <<"' fill='#00FF00' stroke=" << my_turtle.couleur << " stroke-width=\"" << my_turtle.largeur << "\" stroke-miterlimit='10' stroke-dasharray='1000' stroke-dashoffset='0' > </line>  \n" ;
+					// file << "<line x1='"<< x << "' y1='"<< y << "' x2='" << x+cos(theta)*$2 <<"' y2='"<< y+sin(theta)*$2 <<"'  fill='#FFFFFF' stroke='#000000' stroke-width='4' stroke-miterlimit='10' stroke-dasharray='1000' stroke-dashoffset='0'><animate attributeName='x' from='0' to='200' dur='5s' /><animate attributeType='CSS' attributeName='stroke-dashoffset' from='1000' to='0' dur='5s' <!--begin='" << 2*trait <<"s;'--> /><!--animate id='op' attributeType='CSS' attributeName='opacity'from='1' to='0' dur='1s' begin='0s' /--> </line>" ;
+				}
+				else{
+					::file << my_turtle.x+cos(my_turtle.theta)*x << " " << my_turtle.y+sin(my_turtle.theta)*x << " " ;
+				}
+
 			}
 			my_turtle.avancer(x);
 
@@ -1814,18 +1855,23 @@ void run_program(turtle my_turtle){
 			pile.push_back(ins.second);
 			ic++;
 			break;
+			
+			case LARGEUR :
+			x = depiler(pile);
+			my_turtle.largeur = x;
+			ic++;
+			break;
 
 			case LABEL :
-			std::cout << "bite" << std::endl;
 			ic++;
 			break;
 
 			case GOTO :
-			for(auto it : labels ){
-				std::cout << it.first << " " << it.second << '\n';
-			}
-			if(labels[labelTosearch])
+			
+			if(labels[labelTosearch]){
+				std::cout << labelTosearch  << " " << labels[labelTosearch]  << '\n';
 				ic  = labels[labelTosearch]  ;
+			}
 			ic++;
 			break;
 
@@ -1848,6 +1894,17 @@ void run_program(turtle my_turtle){
 			ic++;
 			break;
 
+			case PATH	  :
+			my_turtle.path = true ;
+			::file << "<path d=\"M" << my_turtle.x << " " << my_turtle.y << " "   ;							
+			break;
+
+			case ENDPATH  :
+			my_turtle.path = false ;
+			::file << "stroke=\"" << my_turtle.couleur <<"\" stroke-width=\"" << my_turtle.largeur << "\" fill=\"" << my_turtle.couleur << "\" />"    ;		
+			break;
+
+
 			case TAILLE :
 			x = depiler(pile);
 			y = depiler(pile);
@@ -1858,9 +1915,26 @@ void run_program(turtle my_turtle){
 			break;
 
 			case COULEUR :
-			my_turtle.couleur= zoli[ic]; 
+			
+			my_turtle.couleur= zoli[ic][colorcount[ic]++]; 
 			ic++;
 			break;
+
+
+			case COULEURRGB :
+			r = depiler(pile);
+			g = depiler(pile);
+			b = depiler(pile);
+			std::cout << r << " " << g << " " << b  << std::endl;
+			zoli[ic].push_back("\"#"+int_to_hex((int)r%255)+
+									 int_to_hex((int)g%255)+
+				   				     int_to_hex((int)b%255)+ "\"");
+			my_turtle.couleur= zoli[ic][colorcount[ic]++]; 
+			ic++;
+			break;
+
+
+
 
 
 			case ROTATE :
@@ -1874,10 +1948,30 @@ void run_program(turtle my_turtle){
 			ic++;
 			break;
 
-			case POUR : // TO DO
+			case VAR :
+
+			// x = depiler(pile);
+			// variables[ins.first] = x;
+			// pile.push_back(x);
 
 			ic++;
-			break;			
+			break;
+
+			case POUR : // TO DO
+			ic++;
+			break;
+
+			case FINPOUR : {
+				auto it = fors.rbegin();
+				if(it->second >= 0){
+					ic = it->first;
+					it->second--;
+				}
+				else{
+					ic++;
+				}
+				break;			
+			}
 
 			case JMP :
 			ic = ins.second;
@@ -1903,25 +1997,32 @@ void run_program(turtle my_turtle){
 
 
 
+
 int main(int argc, char **argv) {
 
 	
-	file 	<< "<html><head><title>des seins</title><meta charset=\"utf-8\"></head>"
-	<< "<body> <svg width='200mm' height='200mm' viewBox='0 0 1000 1000'id='svg1'>" ;
-
+	// on ajoute l'entête du fichier
+	file << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<svg width='200mm' height='200mm' viewBox='0 0 1000 1000' id='svg1'>\n" ;
+	
+	// on crée la turtle
 	turtle my_turtle;
-	zoli[0] = "\"#000000\"";
+	
+	// initialisation de la couleur sur Noir
+	zoli[0].push_back("\"#000000\"");
+	colorcount[0] = 0;
+
 
 	if ( argc > 1 )
 		yyin = fopen( argv[1], "r" );
 	else
 		yyin = stdin;
+
 	yyparse();
 
 	print_program();
 
 	run_program(my_turtle);
 
-	file << "</svg></body></html>" ;
+	file << "</svg>\n";
 
 } 

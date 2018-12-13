@@ -14,10 +14,7 @@ public:
 
 
     int render();
-    int render(const std::string  &filename);
-
     std::string *filename() const;
-    void setFilename(std::string *filename);
 
 };
 

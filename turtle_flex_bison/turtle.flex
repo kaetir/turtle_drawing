@@ -1,21 +1,20 @@
 %option noyywrap
 
 %{
-#include <string>
 #include <iostream>
 
-
-// structure pour stocker les adresses pour les sauts condistionnels et autres...
 typedef struct adr {
-    int ic_goto; 
-    int ic_false;
-} t_adresse;
+	int ic_goto; 
+	int ic_false;
+} t_adresse; 
 
 #include "projet.bison.hpp" 
 using namespace std;
 
 
 %}
+
+%option nounput
 
 %%
 #.*$								{ /*cout << "Comment " << yytext  << endl;*/	} // regex 							{ instruction avec return de token pour bison   }
@@ -25,8 +24,12 @@ Alors|alors|ALORS 					{ return ALORS; 								}
 Sinon|sinon|SINON					{ return SINON; 								}
 FinSi|finsi|FINSI					{ return FINSI; 								}
 pour|for     		             	{ return POUR;	                                }
+faire|do     		             	{ return FAIRE;	                                }
 finpour|endfor                  	{ return FINPOUR;                               }
+chemin|path							{ return PATH;									}
+finchemin|endpath					{ return ENDPATH;								}
 taille								{ return TAILLE;								}
+taillec								{ return LARGEUR;								}
 label 		                    	{ return LABEL;                  				}
 goto 		                    	{ return GOTO;                  				}
 couleur		                    	{ return COULEUR;                  				}
