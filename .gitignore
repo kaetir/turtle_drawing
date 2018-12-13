@@ -31,6 +31,13 @@
 *.user
 *.directory
 
+# conpil files #
+######################
+
+moc_*
+build-turtle_drawing-Desktop_Qt_5_11_2_GCC_64bit-Release/*.turtle
+build-turtle_drawing-Desktop_Qt_5_11_2_GCC_64bit-Release/*.svg
+build-turtle_drawing-Desktop_Qt_5_11_2_GCC_64bit-Release/turtle
 # OS generated files #
 ######################
 .DS_Store
